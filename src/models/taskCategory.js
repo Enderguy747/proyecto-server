@@ -1,20 +1,21 @@
 
 import { sequelize, DataTypes } from '../database/database.js'
 
-const User = sequelize.define('user', {
+const taskCategory = sequelize.define('taskCategory', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  name: {
+  categoryName: {
     type: DataTypes.STRING,
     allowNull: false
   }
+
 },
 // configuration for timestamps starts here
 {
   timestamps: true
 }
 )
-export { User }
+export { taskCategory }
