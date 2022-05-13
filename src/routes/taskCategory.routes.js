@@ -9,6 +9,7 @@ import {
 
 const taskCategoryRouter = Router()
 
+/* Creating a route for each of the functions in the controller. */
 taskCategoryRouter.get('/', getTaskCategory)
 taskCategoryRouter.get('/:id', getOneTaskCategory)
 taskCategoryRouter.post('/', saveTaskCategory)

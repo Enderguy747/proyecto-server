@@ -1,6 +1,7 @@
 
 import { sequelize, DataTypes } from '../database/database.js'
 
+/* Creating a table in the database. */
 const taskCategory = sequelize.define('taskCategory', {
   id: {
     type: DataTypes.INTEGER,
