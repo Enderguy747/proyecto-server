@@ -1,5 +1,6 @@
 
 import { sequelize, DataTypes } from '../database/database.js'
+import { task } from './task.js'
 
 /* Creating a table in the database. */
 const taskCategory = sequelize.define('taskCategory', {
@@ -19,4 +20,14 @@ const taskCategory = sequelize.define('taskCategory', {
   timestamps: true
 }
 )
+taskCategory.hasMany(task, {
+  foreignKey: 'taskCategoryId',
+  sourceKey: 'id',
+  onDelete: 'no action',
+  onUpdate: 'no action'
+})
+task.belongsTo(taskCategory, {
+  foreignKey: 'taskCategoryId',
+  targetKey: 'id'
+})
 export { taskCategory }
