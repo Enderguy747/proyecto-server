@@ -1,14 +1,15 @@
 import { taskCategory } from '../models/taskCategory.js'
 
 /**
- * It returns true if the task category exists, otherwise it returns false.
- * @param taskCategoryId - The id of the task category that you want to check if it exists.
- * @returns The count of the number of rows in the table that match the where clause.
+ * It returns true if the task category with the given id does not exist in the database, otherwise it
+ * returns false.
+ * @param taskCategoryId - The id of the task category that you want to check if it exists or not.
+ * @returns A function that returns a promise.
  */
-async function taskCategoryExists (taskCategoryId) {
+async function tskCtgyNotExists (taskCategoryId) {
   try {
     const { count } = await taskCategory.findAndCountAll({ where: { id: taskCategoryId } })
-    return count > 0
+    return !(count > 0)
   } catch (error) {
     console.error(error.message)
   }
@@ -54,14 +55,14 @@ async function saveTaskCategory (req, res) {
 async function deleteTaskCategory (req, res) {
   const { id } = req.params
   try {
-    if (!taskCategoryExists(id)) return res.status(404).json({ message: 'taskCategory not found' })
+    if (await tskCtgyNotExists(id)) res.status(404).json({ message: 'taskCategory not found' })
 
     await taskCategory.destroy({
       where: {
         id
       }
     })
-    res.status(204).json({ message: 'category deleted' })
+    return res.status(204).json({ message: 'category deleted' })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
@@ -78,13 +79,14 @@ async function deleteTaskCategory (req, res) {
 async function getOneTaskCategory (req, res) {
   const { id } = req.params
   try {
+    if (await tskCtgyNotExists(id)) res.status(404).json({ message: 'taskCategory not found' })
     const tskCtgy = await taskCategory.findOne({
       where: {
         id
       }
     })
 
-    tskCtgy ? res.json(tskCtgy) : res.status(404).json({ message: 'category not found' })
+    res.json(tskCtgy)
   } catch (error) {
     return res.status(500).json({
       message: error.message
@@ -102,7 +104,7 @@ async function updateTaskCategory (req, res) {
   const { id } = req.params
   const { categoryName } = req.body
   try {
-    if (taskCategoryExists(id)) return res.status(404).json({ message: 'taskCategory not found' })
+    if (await tskCtgyNotExists(id)) res.status(404).json({ message: 'taskCategory not found' })
 
     await taskCategory.update({ categoryName }, {
       where: {
