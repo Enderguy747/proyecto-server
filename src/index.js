@@ -1,6 +1,7 @@
 import { app } from './app.js'
 import { sequelize } from './database/database.js'
 import './models/task.js'
+
 const PORT = process.env.PORT || 3000
 
 /**
@@ -8,7 +9,7 @@ const PORT = process.env.PORT || 3000
  * the database with the models, and then it will listen on the port specified in the PORT variable.
  */
 async function main () {
-  await sequelize.sync({ force: true })
+  await sequelize.sync({ alter: false })
   app.listen(PORT, () => {
     console.log(`Server is running on  http://localhost:${PORT}`)
   })

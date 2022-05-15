@@ -1,5 +1,5 @@
 import { taskCategory } from '../models/taskCategory.js'
-import { tskCtgyNotExists } from '../utils/validateIfNotExists.js'
+import { validateIfNotExists } from '../utils/validateIfNotExists.js'
 
 /**
  * It gets all the task categories and the results number from the database and returns them to the user.
@@ -11,7 +11,7 @@ async function getTaskCategory (req, res) {
     const { count, rows } = await taskCategory.findAndCountAll()
     res.json({ data: rows, results_number: count })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: `Ha ocurrido un error${error.message}` })
   }
 }
 /**
@@ -41,7 +41,7 @@ async function saveTaskCategory (req, res) {
 async function deleteTaskCategory (req, res) {
   const { id } = req.params
   try {
-    if (await tskCtgyNotExists(id)) res.status(404).json({ message: 'taskCategory not found' })
+    if (await validateIfNotExists(id, taskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
 
     await taskCategory.destroy({
       where: {
@@ -65,7 +65,7 @@ async function deleteTaskCategory (req, res) {
 async function getOneTaskCategory (req, res) {
   const { id } = req.params
   try {
-    if (await tskCtgyNotExists(id)) res.status(404).json({ message: 'taskCategory not found' })
+    if (await validateIfNotExists(id, taskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
     const tskCtgy = await taskCategory.findOne({
       where: {
         id
@@ -90,7 +90,7 @@ async function updateTaskCategory (req, res) {
   const { id } = req.params
   const { categoryName } = req.body
   try {
-    if (await tskCtgyNotExists(id)) res.status(404).json({ message: 'taskCategory not found' })
+    if (await validateIfNotExists(id, taskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
 
     await taskCategory.update({ categoryName }, {
       where: {
