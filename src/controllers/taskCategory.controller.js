@@ -1,17 +1,22 @@
-import { taskCategory } from '../models/taskCategory.js'
+import { TaskCategory } from '../models/TaskCategory.js'
+// eslint-disable-next-line no-unused-vars
+import { Task } from '../models/Task.js'
 import { validateIfNotExists } from '../utils/validateIfNotExists.js'
 
 /**
- * It gets all the task categories and the results number from the database and returns them to the user.
+ * It gets all the task categories from the database and returns them in a JSON format.
  * @param req - The request object.
  * @param res - the response object
  */
 async function getTaskCategory (req, res) {
   try {
-    const { count, rows } = await taskCategory.findAndCountAll()
+    const { count, rows } = await TaskCategory.findAndCountAll({
+      attributes: ['id', 'categoryName'],
+      order: [['id', 'ASC']]
+    })
     res.json({ data: rows, results_number: count })
   } catch (error) {
-    res.status(500).json({ message: `Ha ocurrido un error${error.message}` })
+    res.status(500).json({ message: `Ha ocurrido un error ${error.message}` })
   }
 }
 /**
@@ -23,10 +28,10 @@ async function getTaskCategory (req, res) {
 async function saveTaskCategory (req, res) {
   try {
     const { categoryName } = req.body
-    const tskCtgy = await taskCategory.create({
+    const taskCategory = await TaskCategory.create({
       categoryName
     })
-    res.status(201).json(tskCtgy)
+    res.status(201).json(taskCategory)
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -41,9 +46,9 @@ async function saveTaskCategory (req, res) {
 async function deleteTaskCategory (req, res) {
   const { id } = req.params
   try {
-    if (await validateIfNotExists(id, taskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
+    if (await validateIfNotExists(id, TaskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
 
-    await taskCategory.destroy({
+    await TaskCategory.destroy({
       where: {
         id
       }
@@ -65,14 +70,14 @@ async function deleteTaskCategory (req, res) {
 async function getOneTaskCategory (req, res) {
   const { id } = req.params
   try {
-    if (await validateIfNotExists(id, taskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
-    const tskCtgy = await taskCategory.findOne({
+    if (await validateIfNotExists(id, TaskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
+    const taskCategory = await TaskCategory.findOne({
       where: {
         id
       }
     })
 
-    res.json(tskCtgy)
+    res.json(taskCategory)
   } catch (error) {
     return res.status(500).json({
       message: error.message
@@ -90,14 +95,10 @@ async function updateTaskCategory (req, res) {
   const { id } = req.params
   const { categoryName } = req.body
   try {
-    if (await validateIfNotExists(id, taskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
+    if (await validateIfNotExists(id, TaskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
 
-    await taskCategory.update({ categoryName }, {
-      where: {
-        id
-      }
-    }
-    )
+    await TaskCategory.update({ categoryName }, { where: { id } })
+
     return res.status(200).json({ message: 'category updated' })
   } catch (error) {
     return res.status(500).json({ message: 'category not updated' })

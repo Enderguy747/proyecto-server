@@ -12,7 +12,7 @@ app.use('/api/taskCategory', taskCategoryRouter)
 app.use('/api/task', taskRouter)
 
 app.get('/', (req, res) => {
-  res.send('Home API site')
+  res.send('Home api')
 })
 
 export { app }

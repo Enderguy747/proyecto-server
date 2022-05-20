@@ -1,9 +1,9 @@
 
 import { sequelize, DataTypes } from '../database/database.js'
-import { task } from './task.js'
+import { Task } from './Task.js'
 
 /* Creating a table in the database. */
-const taskCategory = sequelize.define('taskCategory', {
+const TaskCategory = sequelize.define('taskCategory', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -20,14 +20,14 @@ const taskCategory = sequelize.define('taskCategory', {
   timestamps: true
 }
 )
-taskCategory.hasMany(task, {
+TaskCategory.hasMany(Task, {
   foreignKey: 'taskCategoryId',
   sourceKey: 'id',
   onDelete: 'no action',
   onUpdate: 'no action'
 })
-task.belongsTo(taskCategory, {
+Task.belongsTo(TaskCategory, {
   foreignKey: 'taskCategoryId',
   targetKey: 'id'
 })
-export { taskCategory }
+export { TaskCategory }
