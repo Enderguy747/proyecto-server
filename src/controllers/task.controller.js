@@ -52,13 +52,15 @@ async function getAllTasks (req, res) {
 async function getOneTask (req, res) {
   const { id } = req.params
   try {
-    if (await validateIfNotExists(id, Task)) return res.status(404).json({ message: 'task not found' })
+    if (await validateIfNotExists(id, Task)) return res.status(404).json({ message: 'Task not found' })
 
     const task = await Task.findOne({
       where: {
         id
       },
+      /* A way to select the columns you want to return from the database. */
       attributes: ['id', 'taskTitle', 'taskDescription', 'taskPriority', 'taskCompleted', 'taskCategoryId'],
+      /* Sorting the results by the id column in ascending order. */
       order: [['id', 'ASC']]
 
     })
@@ -90,7 +92,7 @@ async function updateTask (req, res) {
       }, { where: { id } }
     )
 
-    res.status(200).json({ message: `task updated and ${task[0]} record(s) were modified ` })
+    res.status(200).json({ message: `task updated and ${task[0]} record(s) were modified` })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
