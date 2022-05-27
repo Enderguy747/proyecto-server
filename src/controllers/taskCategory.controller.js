@@ -53,7 +53,7 @@ async function deleteTaskCategory (req, res) {
         id
       }
     })
-    return res.status(204).json({ message: 'category deleted' })
+    return res.status(200).json({ message: 'category deleted' })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
@@ -97,9 +97,9 @@ async function updateTaskCategory (req, res) {
   try {
     if (await validateIfNotExists(id, TaskCategory)) return res.status(404).json({ message: 'taskCategory not found' })
 
-    await TaskCategory.update({ categoryName }, { where: { id } })
+    const taskCategory = await TaskCategory.update({ categoryName }, { where: { id } })
 
-    return res.status(200).json({ message: 'category updated' })
+    res.status(200).json({ message: `taskCategory updated and ${taskCategory[0]} record(s) were modified` })
   } catch (error) {
     return res.status(500).json({ message: 'category not updated' })
   }
