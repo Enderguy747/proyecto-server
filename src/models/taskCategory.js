@@ -21,13 +21,20 @@ const TaskCategory = sequelize.define('taskCategory', {
 }
 )
 TaskCategory.hasMany(Task, {
-  foreignKey: 'taskCategoryId',
+  foreignKey: {
+    name: 'taskCategoryId',
+    allowNull: false
+  },
   sourceKey: 'id',
   onDelete: 'no action',
   onUpdate: 'no action'
 })
 Task.belongsTo(TaskCategory, {
-  foreignKey: 'taskCategoryId',
+  foreignKey: {
+    name: 'taskCategoryId',
+    allowNull: false
+  },
   targetKey: 'id'
+
 })
 export { TaskCategory }

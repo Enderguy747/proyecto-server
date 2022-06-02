@@ -11,6 +11,16 @@ const taskCategoryObjUpdate = {
   categoryName: 'Test category updated'
 }
 
+describe('POST methods for taskCategory', () => {
+  test('Create a new taskCategory', async () => {
+    const response = await request(app).post('/api/taskCategory').send(taskCategoryObj)
+    lastAddedIndex = response.body.id
+    expect(response.status).toBe(201)
+    expect(response.type).toBe('application/json')
+    expect(response.body).toBeDefined()
+  })
+})
+
 describe('GET Methods for task', () => {
   test('Get all taskCategory', async () => {
     const response = await request(app).get('/api/taskCategory')
@@ -20,7 +30,7 @@ describe('GET Methods for task', () => {
   })
 
   test('Get one taskCategory', async () => {
-    const response = await request(app).get('/api/taskCategory/1')
+    const response = await request(app).get(`/api/taskCategory/${lastAddedIndex}`)
     expect(response.status).toBe(200)
     expect(response.type).toBe('application/json')
     expect(response.body).toBeDefined()
@@ -36,15 +46,6 @@ describe('GET methods when the id did not match', () => {
   })
 })
 
-describe('POST methods for taskCategory', () => {
-  test('Create a new taskCategory', async () => {
-    const response = await request(app).post('/api/taskCategory').send(taskCategoryObj)
-    lastAddedIndex = response.body.id
-    expect(response.status).toBe(201)
-    expect(response.type).toBe('application/json')
-    expect(response.body).toBeDefined()
-  })
-})
 describe('PUT methods for taskCategory', () => {
   test('Update a taskCategory', async () => {
     const response = await request(app).put(`/api/taskCategory/${lastAddedIndex}`).send(taskCategoryObjUpdate)

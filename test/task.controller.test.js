@@ -2,12 +2,18 @@
 import request from 'supertest'
 import { app } from '../src/app.js'
 // import { Task } from '../src/models/Task.js'
+let lastAddedIndex = 0
+let taskCategoryId = 0
+
+const taskCategoryObj = {
+  categoryName: 'Test category'
+}
 const taskObj = {
   taskTitle: 'Test task',
   taskDescription: 'Test description',
   taskPriority: 1,
   taskCompleted: false,
-  taskCategoryId: 1
+  taskCategoryId
 }
 
 const taskObjUpdate = {
@@ -15,12 +21,28 @@ const taskObjUpdate = {
   taskDescription: 'Test description updated',
   taskPriority: 2,
   taskCompleted: true,
-  taskCategoryId: 2
+  taskCategoryId
 }
 
-let lastAddedIndex = 0
+describe('task tests', () => {
+  beforeEach(async () => {
+    const response = await request(app).post('/api/taskCategory').send(taskCategoryObj)
+    taskCategoryId = response.body.id
+    return response
+  })
 
-describe('GET Methods for task', () => {
+  afterEach(async () => {
+    return await request(app).delete(`/api/taskCategory/${lastAddedIndex}`)
+  })
+
+  test('Create a new task', async () => {
+    const response = await request(app).post('/api/task').send(taskObj)
+    lastAddedIndex = response.body.id
+    expect(response.status).toBe(201)
+    expect(response.type).toBe('application/json')
+    expect(response.body).toBeDefined()
+  })
+
   test('Get all tasks', async () => {
     const response = await request(app).get('/api/task')
     expect(response.status).toBe(200)
@@ -29,41 +51,26 @@ describe('GET Methods for task', () => {
   })
 
   test('Get one task', async () => {
-    const response = await request(app).get('/api/task/1')
+    const response = await request(app).get(`/api/task/${lastAddedIndex}`)
     expect(response.status).toBe(200)
     expect(response.type).toBe('application/json')
     expect(response.body).toBeDefined()
   })
-})
 
-describe('GET methods when the id did not match', () => {
   test('Get one task that did not exist', async () => {
     const response = await request(app).get('/api/task/0')
     expect(response.status).toBe(404)
     expect(response.type).toBe('application/json')
     expect(response.body.message).toEqual('Task not found')
   })
-})
 
-describe('POST methods for task', () => {
-  test('Create a new task', async () => {
-    const response = await request(app).post('/api/task').send(taskObj)
-    lastAddedIndex = response.body.id
-    expect(response.status).toBe(201)
-    expect(response.type).toBe('application/json')
-    expect(response.body).toBeDefined()
-  })
-})
-describe('PUT methods for task', () => {
   test('Update a task', async () => {
     const response = await request(app).put(`/api/task/${lastAddedIndex}`).send(taskObjUpdate)
     expect(response.status).toBe(200)
     expect(response.type).toBe('application/json')
     expect(response.body.message).toEqual('task updated and 1 record(s) were modified')
   })
-})
 
-describe('Delete methods for task', () => {
   test('Delete a task', async () => {
     const response = await request(app).delete(`/api/task/${lastAddedIndex}`)
     expect(response.status).toBe(200)
