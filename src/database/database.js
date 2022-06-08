@@ -3,9 +3,11 @@ import 'dotenv/config'
 
 /* Creating a new instance of Sequelize and passing in the database name, user, password, host, and
 dialect. */
-const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
-  host: 'localhost',
-  dialect: 'postgres'
-})
+const sequelize = new Sequelize(process.env.DATABASE_NAME,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASSWORD, {
+    host: process.env.DATABASE_HOST || 'localhost',
+    dialect: 'postgres'
+  })
 
 export { sequelize, DataTypes }
