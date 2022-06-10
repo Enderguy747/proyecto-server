@@ -1,6 +1,6 @@
-import { TaskCategory } from '../../src/models/TaskCategory.js'
+import { TaskCategory } from '../models/TaskCategory.js'
 
-import { validateIfNotExists } from '../../src/utils/validateIfNotExists.js'
+import { validateIfNotExists } from '../utils/validateIfNotExists.js'
 
 /**
  * It gets all the task categories from the database and returns them in a JSON format.

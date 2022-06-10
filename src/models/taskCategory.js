@@ -1,5 +1,5 @@
 
-import { sequelize, DataTypes } from '../../src/database/database.js'
+import { sequelize, DataTypes } from '../database/database.js'
 import { Task } from './Task.js'
 
 /* Creating a table in the database. */

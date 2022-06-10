@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from '../../src/database/database.js'
+import { sequelize, DataTypes } from '../database/database.js'
 
 const Task = sequelize.define('task', {
   id: {
