@@ -1,6 +1,5 @@
 import { TaskCategory } from '../models/TaskCategory.js'
-// eslint-disable-next-line no-unused-vars
-import { Task } from '../models/Task.js'
+
 import { validateIfNotExists } from '../utils/validateIfNotExists.js'
 
 /**
