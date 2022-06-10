@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000
 
 /**
  * The main function is an async function that will await the sequelize.sync function, which will sync
- * the database with the models, and then it will listen on the port specified in the PORT variable.
+ * the database with the models, and then it will listen on the port specified in the PORT variable
  */
 async function main () {
   await sequelize.sync({ force: true })
