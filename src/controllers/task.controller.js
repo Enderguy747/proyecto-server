@@ -1,5 +1,5 @@
-import { Task } from '../models/Task.js'
-import { validateIfNotExists } from '../utils/validateIfNotExists.js'
+import { Task } from '../../src/models/Task.js'
+import { validateIfNotExists } from '../../src/utils/validateIfNotExists.js'
 
 /**
  * It takes the data from the request body, creates a new task with that data, and returns the new task

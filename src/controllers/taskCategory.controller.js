@@ -1,7 +1,6 @@
-import { TaskCategory } from '../models/TaskCategory.js'
-// eslint-disable-next-line no-unused-vars
-import { Task } from '../models/Task.js'
-import { validateIfNotExists } from '../utils/validateIfNotExists.js'
+import { TaskCategory } from '../../src//models/TaskCategory.js'
+
+import { validateIfNotExists } from '../../src/utils/validateIfNotExists.js'
 
 /**
  * It gets all the task categories from the database and returns them in a JSON format.
