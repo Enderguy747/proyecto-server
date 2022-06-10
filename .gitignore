@@ -3,3 +3,4 @@
 .env
 /coverage/
 /postgres-db/
+tree.txt

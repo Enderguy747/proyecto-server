@@ -1,6 +1,6 @@
 
 import { sequelize, DataTypes } from '../database/database.js'
-import { Task } from './Task.js'
+import { Task } from './task.js'
 
 /* Creating a table in the database. */
 const TaskCategory = sequelize.define('taskCategory', {
