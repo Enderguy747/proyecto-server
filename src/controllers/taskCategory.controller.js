@@ -1,4 +1,4 @@
-import { TaskCategory } from '../../src//models/TaskCategory.js'
+import { TaskCategory } from '../../src/models/TaskCategory.js'
 
 import { validateIfNotExists } from '../../src/utils/validateIfNotExists.js'
 
